@@ -50,7 +50,6 @@ export default function LandingPage() {
   return (
     <div className=" text-gray-900">
       {/* Hero Section */}
-      <div className="absolute w-[300px] h-[300px] bg-pink-500 blur-3xl rounded-full top-0 left-1/4 opacity-20"></div>
 
       <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center px-6 py-20 md:px-20">
         <motion.div
@@ -67,13 +66,15 @@ export default function LandingPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r  bg-clip-text">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-700 via-fuchsia-500 to-indigo-600 text-transparent bg-clip-text">
             ElderEase
           </h1>
+
           <p className="text-xl ">
             Empowering seniors with easy access to healthcare and social support
             programs.
           </p>
+          <div className="absolute w-[300px] h-[300px] bg-pink-500 blur-3xl rounded-full top-120 left-2/3 opacity-20"></div>
         </motion.div>
       </section>
 
