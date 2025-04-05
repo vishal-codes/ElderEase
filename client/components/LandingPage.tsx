@@ -48,8 +48,10 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="bg-white text-gray-900">
+    <div className=" text-gray-900">
       {/* Hero Section */}
+      <div className="absolute w-[300px] h-[300px] bg-pink-500 blur-3xl rounded-full top-0 left-1/4 opacity-20"></div>
+
       <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center px-6 py-20 md:px-20">
         <motion.div
           className="w-full flex justify-center mb-10 md:mb-0"
@@ -65,10 +67,10 @@ export default function LandingPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-transparent bg-clip-text">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r  bg-clip-text">
             ElderEase
           </h1>
-          <p className="text-xl text-purple-600">
+          <p className="text-xl ">
             Empowering seniors with easy access to healthcare and social support
             programs.
           </p>
@@ -76,9 +78,9 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="min-h-screen px-6 md:px-20 py-20 bg-gradient-to-b from-gray-50 via-gray-100 to-white">
+      <section className="min-h-screen px-6 md:px-20 py-20 ">
         <motion.h2
-          className="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text"
+          className="text-3xl font-bold text-center mb-10 bg-gradient-to-r bg-clip-text"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -98,18 +100,16 @@ export default function LandingPage() {
               viewport={{ once: true }}
             >
               {item.icon}
-              <h3 className="text-lg font-semibold text-purple-700 mt-4">
-                {item.title}
-              </h3>
+              <h3 className="text-lg font-semibold  mt-4">{item.title}</h3>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="min-h-screen px-6 md:px-20 py-20 bg-white">
+      <section className="min-h-screen px-6 md:px-20 py-20">
         <motion.h2
-          className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
+          className="text-3xl font-bold text-center mb-6  bg-clip-text"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
