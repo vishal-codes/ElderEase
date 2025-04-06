@@ -52,31 +52,52 @@ export default function LandingPage() {
     <div className=" text-gray-900">
       {/* Hero Section */}
 
-      <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center px-6 py-20 md:px-20">
+      <section className="relative min-h-screen px-6 py-20 md:px-20 flex items-center">
+        {/* Blob first */}
         <motion.div
-          className="w-full flex justify-center mb-10 md:mb-0"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Image src="/next.svg" alt="Hero Graphic" width={400} height={400} />
-        </motion.div>
-        <motion.div
-          className="w-full text-center md:text-left"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-700 via-fuchsia-500 to-indigo-600 text-transparent bg-clip-text">
-            ElderEase
-          </h1>
+          initial={{ opacity: 0.4, scale: 1 }}
+          animate={{ opacity: 0.5, scale: 1.75 }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="pointer-events-none absolute w-[600px] h-[550px] top-[20%] left-[60%] z-0 
+             bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 
+             opacity-10 blur-[25px] rounded-full"
+        />
 
-          <p className="text-xl ">
-            Empowering seniors with easy access to healthcare and social support
-            programs.
-          </p>
-          <div className="absolute w-[300px] h-[300px] bg-pink-500 blur-3xl rounded-full top-120 left-2/3 opacity-20"></div>
-        </motion.div>
+        {/* Grid goes inside a relative wrapper to not overlap the blob */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 items-center w-full z-10">
+          <motion.div
+            className="w-full flex justify-center mb-10 md:mb-0"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Image
+              src="/next.svg"
+              alt="Hero Graphic"
+              width={400}
+              height={400}
+            />
+          </motion.div>
+          <motion.div
+            className="w-full p-6 sm:p-20 text-center md:text-left bg-white/10 backdrop-blur-xl rounded-2xl border border-white/90 shadow-lg"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            🌻
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-700 via-fuchsia-500 to-indigo-600 text-transparent bg-clip-text">
+              ElderEase
+            </h1>
+            <p className="text-xl mt-4 text-indigo-700">
+              Empowering seniors with easy access to healthcare and social
+              support programs.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
       {/* Features Section */}
