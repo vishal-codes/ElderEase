@@ -82,7 +82,7 @@
 
 import { useEffect, useState } from 'react';
 import { account } from './appwrite';
-import { Models } from 'appwrite';
+import { Models, OAuthProvider } from 'appwrite';
 import { useRouter } from 'next/navigation';
 
 export function useAuth() {
@@ -104,7 +104,7 @@ export function useAuth() {
 
   const login = () => {
     account.createOAuth2Session(
-      'google' as any,
+      OAuthProvider.Google,
       `${window.location.origin}/home`, // success redirect
       `${window.location.origin}/`     // failure redirect
     );
