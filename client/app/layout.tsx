@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-gradient-to-br from-purple-300 via-pink-100 to-blue-200 ">
       <body className={cn("min-h-screen relative ", fontSans.variable)}>
         {/* Blurred Decorative Blobs */}
 

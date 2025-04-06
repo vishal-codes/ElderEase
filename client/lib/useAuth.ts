@@ -33,8 +33,8 @@ export function useAuth() {
             photoURL: currentUser.photoURL,
             createdAt: new Date().toISOString()
           });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-          // Don't crash if doc already exists
           if (error.message.includes('already exists')) {
             console.log('✅ User already exists in Appwrite.');
           } else {

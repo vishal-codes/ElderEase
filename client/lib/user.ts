@@ -5,6 +5,7 @@ const DB_ID = '67f178fe0019346e7ffb';
 const COLLECTION_ID = '67f17905003c7d0eee37';
 
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function saveUserProfile(userData: any) {
   try {
     const response = await databases.createDocument(

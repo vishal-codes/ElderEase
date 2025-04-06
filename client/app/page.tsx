@@ -1,11 +1,8 @@
 "use client";
 
-import Home from "@/components/Home";
 import LandingPage from "@/components/LandingPage";
 import Navbar from "@/components/Navbar";
-import HealthInsuranceSupport from "@/components/HealthInsurance";
-import PrescriptionReminder from "@/components/PrescriptionReminder";
-import DailyJournal from "@/components/DailyJournal";
+
 
 export default function Page() {
   return (
@@ -13,10 +10,6 @@ export default function Page() {
       {/* Main content */}
       <Navbar />
       <LandingPage />
-      {/* <Home /> */}
-      {/* <HealthInsuranceSupport /> */}
-      {/* <PrescriptionReminder /> */}
-      {/* <DailyJournal /> */}
     </div>
   );
 }
