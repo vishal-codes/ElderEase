@@ -41,6 +41,7 @@ export default function HomePage() {
     employmentStatus: "",
     veteranStatus: false,
     disabilityStatus: false,
+    
   });
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -82,14 +83,14 @@ export default function HomePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) return;
-
+    if (!user || !user.$id) return;
+  
     try {
       await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
         ...formData,
         age: Number(formData.age),
         employmentStatus: formData.employmentStatus === "employed",
-        userId: user.uid,
+        userId: user.$id, // ✅ Correct Appwrite user ID
       });
       setUserData(formData);
       alert("✅ Data saved to Appwrite!");
@@ -98,6 +99,7 @@ export default function HomePage() {
       alert("Error saving data. Check console.");
     }
   };
+  
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -107,7 +109,7 @@ export default function HomePage() {
         const response = await databases.listDocuments(
           DATABASE_ID,
           COLLECTION_ID,
-          [Query.equal("userId", user.uid)] // 👈 correct string filter
+          [Query.equal("userId", user.$id)] // 👈 correct string filter
         );
 
         if (response.documents.length > 0) {

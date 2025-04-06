@@ -1,3 +1,4 @@
+
 "use client";
 import { useAuth } from "@/lib/useAuth";
 import { usePathname } from "next/navigation";
@@ -21,7 +22,7 @@ const Navbar = ({ onViewInfoClick, showViewInfo = false }: NavbarProps) => {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            {pathname === "/home" && showViewInfo && (
+            { showViewInfo && (
               <button
                 onClick={onViewInfoClick}
                 className="bg-green-300 hover:bg-green-300 px-4 py-2 rounded-3xl text-sm cursor-pointer transition"
@@ -33,7 +34,7 @@ const Navbar = ({ onViewInfoClick, showViewInfo = false }: NavbarProps) => {
             {/* Show user name ONLY on landing/login page */}
             {pathname == "/" && (
               <span className="text-gray-700 text-sm">
-                {user.displayName || user.email}
+                {user.name || user.email}
               </span>
             )}
 
@@ -59,3 +60,4 @@ const Navbar = ({ onViewInfoClick, showViewInfo = false }: NavbarProps) => {
 };
 
 export default Navbar;
+
