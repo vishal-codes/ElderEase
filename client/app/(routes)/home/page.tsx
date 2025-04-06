@@ -11,6 +11,8 @@ import {
 } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
+import { IoMdCloseCircle } from "react-icons/io";
 
 interface UserProfile {
   name: string;
@@ -29,7 +31,7 @@ export default function HomePage() {
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [userData, setUserData] = useState<UserProfile | null>(null);
   const [formData, setFormData] = useState<UserProfile>({
     name: "",
@@ -129,7 +131,18 @@ export default function HomePage() {
     checkUserProfile();
   }, [user]);
 
-  if (!user) return <div className="p-6">Loading or not logged in...</div>;
+  if (!user)
+    return (
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <Image
+          src="/loading.svg"
+          alt="Loading"
+          width={300}
+          height={300}
+          className="animate-pulse"
+        />
+      </div>
+    );
 
   const features = [
     {
@@ -155,9 +168,12 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-purple-300 via-pink-100 to-blue-200">
+    <div className="">
       {/* Navbar */}
-      <Navbar showViewInfo={!!userData} onViewInfoClick={() => setShowInfo(true)} />
+      <Navbar
+        showViewInfo={!!userData}
+        onViewInfoClick={() => setShowInfo(true)}
+      />
 
       {/* Main Section */}
       {!userData ? (
@@ -242,25 +258,22 @@ export default function HomePage() {
       ) : (
         // 🙌 Show welcome if userData exists
         <>
-        <div className="flex flex-col items-center justify-center mt-15 text-4xl font-bold text-gray-800">
-  <span>Welcome back,</span>
-  <span className="mt-2 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent text-5xl mt-2">
-    {userData.name} 👋
-  </span>
-  <p className="mt-7 text-center text-lg font-medium text-gray-600 max-w-2xl">
-  Dive in and use any of our features to unlock the benefits you truly&nbsp;deserve.
-</p>
+          <div className="flex flex-col items-center justify-center mt-15 text-4xl font-bold text-gray-800">
+            <span>
+              Hello{" "}
+              <span className="mt-2 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent text-5xl">
+                {userData.name}
+              </span>{" "}
+            </span>{" "}
+          </div>
 
-</div>
-
-          <div className="relative min-h-screen flex items-center justify-center overflow-hidden pb-4 py-8">
+          <div className="relative flex items-center justify-center overflow-hidden pt-10">
             {/* Grid Container */}
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl z-10">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center space-y-2 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-purple-300 cursor-pointer transition"
+                  className="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center space-y-2 text-center transform  ransition-allduration-300 hover:scale-105 hover:shadow-purple-300 cursor-pointer transition"
                   // onclick route to feature.title
                   onClick={() => router.push(`/${feature.route}`)}
                 >
@@ -273,8 +286,8 @@ export default function HomePage() {
             </div>
 
             {/* Blobs */}
-            <div className="absolute top-[-120px] left-[-120px] w-[300px] h-[300px] bg-purple-300 opacity-90 rounded-full blur-3xl z-0" />
-            <div className="absolute bottom-[-120px] right-[-120px] w-[300px] h-[300px] bg-pink-200 opacity-30 rounded-full blur-2xl z-0" />
+            {/* <div className="absolute top-[-120px] left-[-120px] w-[300px] h-[300px] bg-purple-300 opacity-90 rounded-full blur-3xl z-0" />
+            <div className="absolute bottom-[-120px] right-[-120px] w-[300px] h-[300px] bg-pink-200 opacity-30 rounded-full blur-2xl z-0" /> */}
           </div>
         </>
       )}
@@ -288,9 +301,9 @@ export default function HomePage() {
                 setShowInfo(false);
                 setIsEditing(false);
               }}
-              className="absolute top-2 right-3 text-xl text-gray-500 hover:text-red-500"
+              className="absolute cursor-pointer top-2 right-3 text-xl text-gray-500 hover:text-red-500"
             >
-              ×
+              <IoMdCloseCircle />
             </button>
             <h3 className="text-lg font-semibold mb-4">
               {isEditing ? "Edit Your Info" : "Your Info"}

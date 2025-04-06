@@ -1,6 +1,9 @@
+// Canvas Version: Scroll fix + loading overlay correction + auto-scroll to bottom
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { FaMicrophone, FaVolumeUp, FaFileUpload } from "react-icons/fa";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -11,7 +14,9 @@ export default function HealthInsuranceSupport() {
     { sender: "user" | "bot"; text: string }[]
   >([]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
+  const chatRef = useRef<HTMLDivElement | null>(null);
 
   const speak = (text: string) => {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -19,16 +24,32 @@ export default function HealthInsuranceSupport() {
   };
 
   const handleSend = async (msg?: string) => {
+    setLoading(true);
     const userInput = msg || input;
-    if (!userInput.trim()) return;
+    if (!userInput.trim()) {
+      alert("Please enter a question.");
+      setLoading(false);
+      return;
+    }
 
     setMessages((prev) => [...prev, { sender: "user", text: userInput }]);
     setInput("");
     resetTranscript();
 
-    // TODO: Replace with actual AI API call
-    const botResponse = `I'm reviewing your insurance info. Here's what I found about: "${userInput}"`;
+    const response = await fetch(
+      "https://insurance-be-t8a3.onrender.com/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question: userInput }),
+      }
+    );
+    const data = await response.json();
+    const botResponse = data.answer || "Sorry, I couldn't find an answer.";
     setMessages((prev) => [...prev, { sender: "bot", text: botResponse }]);
+    setLoading(false);
   };
 
   const handleSpeechInput = () => {
@@ -36,12 +57,37 @@ export default function HealthInsuranceSupport() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    // TODO: Send PDF file to your backend for processing or parse it here
-    console.log("PDF Uploaded:", file.name);
+    if (!file) {
+      alert("Please Upload insurance file");
+      setLoading(false);
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(
+      "https://insurance-be-t8a3.onrender.com/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const data = await response.json();
+    if (data.error) {
+      console.error("Error uploading file:", data.error);
+      return;
+    }
+    setMessages((prev) => [...prev, { sender: "bot", text: data.summary }]);
+    setLoading(false);
   };
+
+  // Auto scroll to bottom when messages change
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="min-h-screen flex items-center bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 p-6">
@@ -58,7 +104,7 @@ export default function HealthInsuranceSupport() {
         </div>
 
         {/* Chat Section */}
-        <div className="md:w-1/2 space-y-4">
+        <div className="md:w-1/2 space-y-4 flex flex-col">
           <h1 className="text-2xl font-bold text-center text-purple-800">
             Health Insurance AI Support
           </h1>
@@ -77,7 +123,10 @@ export default function HealthInsuranceSupport() {
           </div>
 
           {/* Chat UI */}
-          <div className="h-[500px] overflow-y-auto space-y-3 border rounded-md p-4 bg-gray-50">
+          <div
+            ref={chatRef}
+            className="relative flex-1 overflow-y-auto space-y-3 border rounded-md p-4 bg-gray-50 min-h-[300px] max-h-[500px]"
+          >
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -97,7 +146,7 @@ export default function HealthInsuranceSupport() {
                     {msg.sender === "bot" && (
                       <button
                         onClick={() => speak(msg.text)}
-                        className="ml-2 text-purple-600 hover:text-purple-800"
+                        className="ml-2 text-purple-600 hover:text-purple-800 cursor-pointer"
                       >
                         <FaVolumeUp />
                       </button>
@@ -106,6 +155,19 @@ export default function HealthInsuranceSupport() {
                 </div>
               </div>
             ))}
+
+            {/* Loading Overlay */}
+            {loading && (
+              <div className="absolute inset-0 bg-gray-200/60 backdrop-blur-sm flex items-center justify-center z-10">
+                <Image
+                  src="/loading.svg"
+                  alt="Loading"
+                  width={100}
+                  height={100}
+                  className="animate-pulse"
+                />
+              </div>
+            )}
           </div>
 
           {/* Input Controls */}
@@ -119,7 +181,7 @@ export default function HealthInsuranceSupport() {
             />
             <button
               onClick={() => handleSend()}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md"
+              className="px-4 py-2 bg-purple-600 text-white rounded-md cursor-pointer"
             >
               Send
             </button>
